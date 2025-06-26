@@ -23,11 +23,9 @@ try {
     $stmt->execute();
     $abonements = $stmt->fetchAll();
     
-    // Обработка добавления абонемента в заказ
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $abonementId = $_POST['abonement_id'];
         
-        // Проверка, есть ли уже заказ с этим абонементом для текущего пользователя
         $sql = "SELECT COUNT(*) FROM orders1 WHERE user_id = :user_id AND abonement_id = :abonement_id";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
@@ -37,10 +35,8 @@ try {
         $count = $stmt->fetchColumn();
         
         if ($count > 0) {
-            // Если такой абонемент уже добавлен, выводим ошибку
             $errorMessage = "Вы уже добавили этот абонемент в корзину.";
         } else {
-            // Вставляем новый заказ в таблицу orders1
             $orderDate = date('Y-m-d H:i:s'); // Текущая дата и время
             $status = 'incart'; // Статус по умолчанию
             $sql = "INSERT INTO orders1 (user_id, abonement_id, order_date, status) VALUES (:user_id, :abonement_id, :order_date, :status)";
@@ -52,12 +48,10 @@ try {
                 'status' => $status
             ]);
             
-            // Перенаправляем на ту же страницу, чтобы обновить данные
             header('Location: abonements.php');
             exit;
         }
     }
-    // Вывод заказов пользователя
     $sql = "
     SELECT a.id, a.title, a.price 
     FROM abonement1 a
@@ -106,7 +100,7 @@ try {
             background-color: #005fa3;
         }
 .subscription-block h2 {
-    text-align: center; /* Выравнивание заголовка по центру */
+    text-align: center;
     font-size: 24px;
     margin-bottom: 20px;
 }
@@ -117,7 +111,7 @@ try {
     padding: 15px;
     border: 1px solid #ddd;
     border-radius: 8px;
-    background-color: #f9f9f9; /* Легкий серый фон для каждого абонемента */
+    background-color: #f9f9f9; 
 }
 .subscription-block .abonement-name {
     font-weight: bold;
