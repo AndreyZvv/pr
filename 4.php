@@ -1,12 +1,11 @@
 <?php
-session_start();  // Обязательно вызываем в начале страницы
+session_start();  
 $conn = new mysqli('sql107.infinityfree.com', 'if0_39140569', '43dfpC0vFj6gtd', 'if0_39140569_new');
 if ($conn->connect_error) {
     die('Ошибка подключения к базе данных: ' . $conn->connect_error);
 }
 $login = $_POST['username'] ?? '';
 $password = $_POST['password'] ?? '';
-// Запрос: получаем id, пароль и роль
 $stmt = $conn->prepare("SELECT id, password, role FROM user1 WHERE login = ?");
 $stmt->bind_param("s", $login);
 $stmt->execute();
