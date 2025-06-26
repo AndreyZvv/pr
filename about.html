@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>О нас</title>
+    <link rel="stylesheet" href="style/styles.css">
+</head>
+<body>
+    <div class="blue-background5"></div>
+    <header>
+        <img class="logo" src="images/logoimage.png" />
+        <nav>
+        <a href="index.php">Главная</a>
+            <a href="goods.php">Товары</a>
+        </nav>
+    </header>
+    <br>
+    <section id="services">
+    <h2>Наши услуги</h2>
+    <div class="content-wrapper">
+        <div class="text-container">
+            <ol class="service-list">
+                Услуги
+            </ol>
+        </div>
+        <div class="image-container">
+            <img class="pool" src="images/volna.jpg" alt="Наш бассейн">
+            <figcaption>Здание</figcaption>
+        </div>
+    </div>
+    <div class="map-container">
+        <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A04b41afd82259ba0d330c73a9a1be44ad7ddb4af0a9df4e9644bf5bed47664cb&amp;width=500&amp;height=300&amp;lang=ru_RU&amp;scroll=true"></script> 
+	</div>
+	<figcaption>Расположение на карте</figcaption>
+</section>
+<br><br>
+
+
+    <section id="services">
+        <h2>Расписание</h2>
+        <p>Понедельник - Пятница: 8:00 - 22:00</p>
+        <p>Суббота - Воскресенье: 10:00 - 20:00</p>
+	
+    </section>
+    <br>
+    <footer class="ab">
+        <p>&copy; 2025 Организация. Все права защищены.</p>
+    </footer>
+                 <script>
+        if (localStorage.getItem('loggedIn') === 'true') {
+            const contentDiv = document.getElementById('content');
+            const link = document.createElement('a');
+            link.href = 'profile.php';  
+            const img = document.createElement('img');
+            img.src = 'images/profile.png';
+            img.alt = 'Ссылка для авторизованных';
+            img.classList.add('profile');
+            link.appendChild(img);
+            contentDiv.appendChild(link);
+        } else {
+            document.getElementById('content').innerHTML = '<a href="registr.php" class="registerlink">Зарегистрироваться</a>';
+        }
+    </script>
+</body>
+</html>
