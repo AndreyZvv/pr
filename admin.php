@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-// Обработка выхода
+
 if (isset($_POST['logout'])) {
     session_unset();
     session_destroy();
@@ -9,7 +9,6 @@ if (isset($_POST['logout'])) {
     exit();
 }
 
-// Проверка авторизации и роли
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     header("Location: index.php");
     exit();
@@ -18,7 +17,7 @@ $conn = new mysqli('sql107.infinityfree.com', 'if0_39140569', '43dfpC0vFj6gtd', 
 if ($conn->connect_error) {
     die("Ошибка подключения к БД: " . $conn->connect_error);
 }
-// Обработка добавления товара
+
 if (isset($_POST['add'])) {
     $title = $_POST['title'] ?? '';
     $description = $_POST['description'] ?? '';
@@ -28,7 +27,7 @@ if (isset($_POST['add'])) {
     $stmt->execute();
     $stmt->close();
 }
-// Обработка удаления товара
+
 if (isset($_GET['delete'])) {
     $id = (int)$_GET['delete'];
     $stmt = $conn->prepare("DELETE FROM goods1 WHERE id = ?");
@@ -36,7 +35,7 @@ if (isset($_GET['delete'])) {
     $stmt->execute();
     $stmt->close();
 }
-// Обработка изменения товара
+
 if (isset($_POST['edit'])) {
     $id = (int)$_POST['id'];
     $title = $_POST['title'] ?? '';
@@ -47,7 +46,7 @@ if (isset($_POST['edit'])) {
     $stmt->execute();
     $stmt->close();
 }
-// Получение всех товаров
+
 $result = $conn->query("SELECT * FROM goods1");
 ?>
 <!DOCTYPE html>
