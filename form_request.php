@@ -6,17 +6,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $service = $_POST['service'];
     $date = date('d.m.Y');
 
-    // Загружаем шаблон
     $template = file_get_contents('blank_template.doc');
-
-    // Подстановка значений
+ 
     $filled = str_replace(
         ['${full_name}', '${phone}', '${email}', '${service}', '${date}'],
         [$fullName, $phone, $email, $service, $date],
         $template
     );
 
-    // Установка заголовков для скачивания
     $filename = 'zayavka_' . time() . '.doc';
     header('Content-Type: application/msword');
     header('Content-Disposition: attachment; filename="' . $filename . '"');
