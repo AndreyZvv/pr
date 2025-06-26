@@ -17,17 +17,13 @@ $options = [
 ];
 try {
     $pdo = new PDO($dsn, $user, $pass, $options);
-    // Получаем все товары
     $sql = "SELECT id, title, price, description FROM goods1";
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
     $goods = $stmt->fetchAll();
     
-    // Обработка добавления товара в заказ
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $goodsId = $_POST['goods_id'];
-        
-        // Проверка, есть ли уже заказ с этим товаром для текущего пользователя
         $sql = "SELECT COUNT(*) FROM orders1 WHERE user_id = :user_id AND goods_id = :goods_id";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
@@ -37,12 +33,10 @@ try {
         $count = $stmt->fetchColumn();
         
         if ($count > 0) {
-            // Если такой товар уже добавлен, выводим ошибку
             $errorMessage = "Вы уже добавили этот товар в корзину.";
         } else {
-            // Вставляем новый заказ в таблицу orders1
-            $orderDate = date('Y-m-d H:i:s'); // Текущая дата и время
-            $status = 'incart'; // Статус по умолчанию
+            $orderDate = date('Y-m-d H:i:s');
+            $status = 'incart'; 
             $sql = "INSERT INTO orders1 (user_id, goods_id, order_date, status) VALUES (:user_id, :goods_id, :order_date, :status)";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([
@@ -52,12 +46,10 @@ try {
                 'status' => $status
             ]);
             
-            // Перенаправляем на ту же страницу, чтобы обновить данные
             header('Location: abonements.php');
             exit;
         }
     }
-    // Вывод заказов пользователя
     $sql = "
     SELECT g.id, g.title, g.price 
     FROM goods1 g
@@ -106,7 +98,7 @@ try {
             background-color: #005fa3;
         }
 .subscription-block h2 {
-    text-align: center; /* Выравнивание заголовка по центру */
+    text-align: center; 
     font-size: 24px;
     margin-bottom: 20px;
 }
@@ -116,7 +108,7 @@ try {
     padding: 15px;
     border: 1px solid #ddd;
     border-radius: 8px;
-    background-color: #f9f9f9; /* Легкий серый фон для каждого товара */
+    background-color: #f9f9f9; 
 }
 .subscription-block .goods-name {
     font-weight: bold;
@@ -160,11 +152,11 @@ try {
 <div class="container2">
     <div class="subscription-block" id="subscriptionBlock">
         <h1></h1>
-        <!-- Ошибка, если товар уже добавлен -->
+      
         <?php if (isset($errorMessage)): ?>
             <p class="error-message" style='color: red;'><?= htmlspecialchars($errorMessage) ?></p>
         <?php endif; ?>
-        <!-- Список доступных товаров с кнопками "Добавить" -->
+      
         <h2>Все доступные товары</h2><br>
         <div>
         <?php foreach ($goods as $good): ?>
@@ -173,11 +165,11 @@ try {
         <img class="abon" src="images/image<?php echo htmlspecialchars($good['id']);?>.jpg" alt="Товар <?php echo htmlspecialchars($good['id']); ?>" />
         <div>Цена: <?= htmlspecialchars($good['price']) ?> рубля</div>
         <p class="description"><?php echo htmlspecialchars($good['description']); ?></p>
-        <!-- Добавить изображение товара -->
+      
         <?php if (isset($good['image_url'])): ?>
             <img src="<?= htmlspecialchars($good['image_url']) ?>" alt="Изображение товара">
         <?php endif; ?>
-        <!-- Форма с кнопкой для добавления товара -->
+
         <form action="abonements.php" method="post">
             <input type="hidden" name="goods_id" value="<?= $good['id'] ?>">
             <button type="submit" class="add-button">Добавить</button>
@@ -187,7 +179,6 @@ try {
     </div>
 </div>
 </div>
-<!-- Список активных товаров пользователя -->
 <br><div class="container2">
 <div class="subscription-block" id="subscriptionBlock">
 <h2>Товары в корзине</h2>
