@@ -1,7 +1,6 @@
 <?php
-session_start(); // Запуск сессии
+session_start(); 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Подключение к базе данных
     $conn = new mysqli('sql107.infinityfree.com', 'if0_39140569', '43dfpC0vFj6gtd', 'if0_39140569_new');
     if ($conn->connect_error) {
         die('Ошибка подключения: ' . $conn->connect_error);
@@ -11,7 +10,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $login = $_POST['username'] ?? '';
     $password = $_POST['password'] ?? '';
     $email = $_POST['email'] ?? '';
-    // Проверка на существование пользователя с таким логином или email
     $stmt = $conn->prepare("SELECT id FROM user1 WHERE login = ? OR email = ?");
     $stmt->bind_param("ss", $login, $email);
     $stmt->execute();
@@ -25,15 +23,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $conn->close();
         exit;
     }
-    // Хеширование пароля
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-    // Вставка данных в базу
     $stmt = $conn->prepare("INSERT INTO user1 (login, password, email) VALUES (?, ?, ?)");
     $stmt->bind_param("sss", $login, $hashed_password, $email);
     if ($stmt->execute()) {
-        // Сохранение идентификатора сессии (например, id пользователя) в сессии
-        $_SESSION['user_id'] = $conn->insert_id;  // Сохранить id нового пользователя
-        $_SESSION['logged_in'] = true;  // Установка флага о том, что пользователь вошел в систему
+        $_SESSION['user_id'] = $conn->insert_id;  
+        $_SESSION['logged_in'] = true; 
         echo '<script>
             localStorage.setItem("loggedIn", "true");
             alert("Регистрация прошла успешно!");
